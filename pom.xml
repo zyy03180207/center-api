@@ -35,6 +35,11 @@
 			<version>2.5</version>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+			<groupId>microservice</groupId>
+			<artifactId>online-entity</artifactId>
+			<version>1.0.0</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<finalName>online-center-api</finalName>
