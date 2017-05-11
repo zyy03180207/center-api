@@ -11,9 +11,11 @@ import com.db.support.GenericDao;
 import com.db.support.QueryDao;
 import com.program.centerapi.Global;
 import com.program.centerapi.handler.AdminHandler;
+import com.program.centerapi.handler.FansHandler;
 import com.program.centerapi.param.BaseResult;
 import com.program.centerapi.param.WxWebParam;
 import com.program.centerapi.service.AdminService;
+import com.program.centerapi.service.FansService;
 
 import microservice.api.ServiceApiAdapter;
 import microservice.api.ServiceApiHelper;
@@ -27,6 +29,9 @@ public class WxApiHandler extends ServiceApiAdapter {
 	@Autowired
 	private AdminHandler adminHandler;
 
+	@Autowired
+	private FansHandler fansHandler;
+	
 	@Override
 	public String execute(String json) {
 		// TODO Auto-generated method stub
@@ -42,11 +47,16 @@ public class WxApiHandler extends ServiceApiAdapter {
 				String retData = JSONObject.toJSONString(result);
 				return retData;
 			}
+			WxWebParam webParam = null;
 			// 接口分发
 			switch (cmmd) {
 			case "tb_login":
-				WxWebParam webParam = JSONObject.parseObject(param.getData(), WxWebParam.class);
+				webParam = JSONObject.parseObject(param.getData(), WxWebParam.class);
 				result = login(webParam);
+				break;
+			case "tb_fanslist":
+				webParam = JSONObject.parseObject(param.getData(), WxWebParam.class);
+				result = fanslist(webParam);
 				break;
 			default:
 				result = ServiceResult.createFailResult("接口暂不支持");
@@ -62,6 +72,24 @@ public class WxApiHandler extends ServiceApiAdapter {
 			String retData = JSONObject.toJSONString(result);
 			return retData;
 		}
+	}
+	/**
+	 * 查询粉丝列表
+	 * @param webParam
+	 * @return
+	 */
+	private ServiceResult fanslist(WxWebParam webParam) {
+		// TODO Auto-generated method stub
+		ServiceResult result = new ServiceResult();
+		BaseResult mr = fansHandler.findFansList(webParam);
+		if(mr.isSucc()) {
+			result.setSucc(true);
+			result.setData(mr.getJsonArray().toJSONString());
+			result.setMesg(mr.getMesg());
+		} else {
+			result.setMesg(mr.getMesg());
+		}
+		return result;
 	}
 
 	/**
