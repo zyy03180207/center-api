@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.db.support.DbException;
 import com.program.centerapi.param.BaseResult;
 import com.program.centerapi.param.WxWebParam;
@@ -23,10 +24,15 @@ public class FansHandlerImpl implements FansHandler {
 		BaseResult result = new BaseResult();
 		result.setSucc(false);
 		try {
-			List<TbFans> tbFans = fansService.findFansList();
+			List<TbFans> tbFans = fansService.findFansListPage(Integer.valueOf(param.getPageIndex()), Integer.valueOf(param.getPageSize()));
+			int count = fansService.findFansSize();
+			JSONObject object = new JSONObject();
 			JSONArray jsonArray = new JSONArray();
 			jsonArray.addAll(tbFans);
-			result.setJsonArray(jsonArray);
+			object.put("list", jsonArray);
+			object.put("count", count);
+			result.setJsonObject(object);
+			result.setMesg("查询成功");
 			result.setSucc(true);
 			return result;
 		} catch (DbException e) {

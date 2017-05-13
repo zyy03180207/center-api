@@ -8,5 +8,7 @@ import microservice.online.entity.TbFans;
 
 public interface FansService {
 	
-	public List<TbFans> findFansList() throws DbException;
+	public List<TbFans> findFansListPage(int pageIndex, int pageSize) throws DbException;
+	
+	public int findFansSize() throws DbException;
 }

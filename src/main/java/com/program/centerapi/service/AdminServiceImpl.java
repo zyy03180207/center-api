@@ -1,6 +1,7 @@
 package com.program.centerapi.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,4 +28,30 @@ public class AdminServiceImpl extends GenericServiceImpl implements AdminService
 		return genericDao.findByHql(" from TbAdminUser where username = ? ", new Object[] { username });
 	}
 
+	@Override
+	public TbAdminUser addAdmin(TbAdminUser adminUser) throws DbException {
+		// TODO Auto-generated method stub
+		return genericDao.save(adminUser);
+	}
+
+	@Override
+	public List<Object> findUserAdmin(int pageIndex, int pageSize) throws DbException {
+		// TODO Auto-generated method stub
+		String sql = "SELECT a.id as 'id',a.username as 'username',a.phone as 'phone',a.email as 'email',a.crtime as 'crtime',a.state as 'state',ur.rid as 'rid',ur.uid as 'uid',r.name as 'rname' FROM tb_admin_user a LEFT JOIN tb_user_role ur on a.id = ur.uid LEFT JOIN tb_role r on r.id = ur.rid";
+		List<Object> adminUsers = queryDao.findByPageForSql(sql, null, pageIndex, pageSize);
+		return adminUsers;
+	}
+
+	@Override
+	public int findAdminSize() throws DbException {
+		// TODO Auto-generated method stub
+		int count = 0;
+		String sql = "select count(0) from tb_admin_user";
+		List<TbAdminUser> list = queryDao.findBySql(sql, null);
+		if(list.size() > 0) {
+			count = Integer.valueOf(list.get(0) + "");
+		}
+		return count;
+	}
+	
 }

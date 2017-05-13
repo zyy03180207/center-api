@@ -58,6 +58,30 @@ public class WxApiHandler extends ServiceApiAdapter {
 				webParam = JSONObject.parseObject(param.getData(), WxWebParam.class);
 				result = fanslist(webParam);
 				break;
+			case "tb_adminlist":
+				webParam = JSONObject.parseObject(param.getData(), WxWebParam.class);
+				result = adminlist(webParam);
+				break;
+			case "tb_rolelist":
+				webParam = JSONObject.parseObject(param.getData(), WxWebParam.class);
+				result = fanslist(webParam);
+				break;
+			case "tb_authorlist":
+				webParam = JSONObject.parseObject(param.getData(), WxWebParam.class);
+				result = fanslist(webParam);
+				break;
+			case "tb_add_admin":
+				webParam = JSONObject.parseObject(param.getData(), WxWebParam.class);
+				result = addAdmin(webParam);
+				break;
+			case "tb_add_role":
+				webParam = JSONObject.parseObject(param.getData(), WxWebParam.class);
+				result = fanslist(webParam);
+				break;
+			case "tb_add_author":
+				webParam = JSONObject.parseObject(param.getData(), WxWebParam.class);
+				result = fanslist(webParam);
+				break;
 			default:
 				result = ServiceResult.createFailResult("接口暂不支持");
 				break;
@@ -74,6 +98,42 @@ public class WxApiHandler extends ServiceApiAdapter {
 		}
 	}
 	/**
+	 * 查询管理用户列表
+	 * @param webParam
+	 * @return
+	 */
+	private ServiceResult adminlist(WxWebParam webParam) {
+		// TODO Auto-generated method stub
+		ServiceResult result = new ServiceResult();
+		BaseResult mr = adminHandler.adminList(webParam);
+		if(mr.isSucc()) {
+			result.setSucc(true);
+			result.setData(mr.getJsonObject().toJSONString());
+			result.setMesg(mr.getMesg());
+		} else {
+			result.setMesg(mr.getMesg());
+		}
+		return result;
+	}
+	/**
+	 * 添加管理用户
+	 * @param webParam
+	 * @return
+	 */
+	private ServiceResult addAdmin(WxWebParam webParam) {
+		// TODO Auto-generated method stub
+		ServiceResult result = new ServiceResult();
+		BaseResult mr = adminHandler.addAdmin(webParam);
+		if(mr.isSucc()) {
+			result.setSucc(true);
+			result.setMesg(mr.getMesg());
+			result.setData(mr.getJsonObject().toJSONString());
+		} else {
+			result.setMesg(mr.getMesg());
+		}
+		return result;
+	}
+	/**
 	 * 查询粉丝列表
 	 * @param webParam
 	 * @return
@@ -84,7 +144,7 @@ public class WxApiHandler extends ServiceApiAdapter {
 		BaseResult mr = fansHandler.findFansList(webParam);
 		if(mr.isSucc()) {
 			result.setSucc(true);
-			result.setData(mr.getJsonArray().toJSONString());
+			result.setData(mr.getJsonObject().toJSONString());
 			result.setMesg(mr.getMesg());
 		} else {
 			result.setMesg(mr.getMesg());

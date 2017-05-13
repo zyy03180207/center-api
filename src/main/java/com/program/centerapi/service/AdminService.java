@@ -1,6 +1,7 @@
 package com.program.centerapi.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.db.support.DbException;
 
@@ -10,4 +11,7 @@ public interface AdminService {
 
 	public TbAdminUser getAdminUser(int id) throws DbException;
 	public List<TbAdminUser> findByUserName(String username) throws DbException;
+	public TbAdminUser addAdmin(TbAdminUser adminUser) throws DbException;
+	public List<Object> findUserAdmin(int pageIndex, int pageSize) throws DbException;
+	public int findAdminSize() throws DbException;
 }
