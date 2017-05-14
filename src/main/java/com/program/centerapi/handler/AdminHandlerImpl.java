@@ -8,6 +8,8 @@ import javax.swing.text.rtf.RTFEditorKit;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import com.alibaba.fastjson.JSONArray;
@@ -18,6 +20,8 @@ import com.program.centerapi.param.WxWebParam;
 import com.program.centerapi.service.AdminService;
 
 import microservice.online.entity.TbAdminUser;
+import microservice.online.entity.TbUserRole;
+import microservice.online.entity.TbUserRoleId;
 
 /**
  * 
@@ -61,6 +65,10 @@ public class AdminHandlerImpl implements AdminHandler {
 				result.setMesg("用户名或密码错误");
 				return result;
 			}
+			if(adminUser.getState().equals("0")) {
+				result.setMesg("该账号未启用");
+				return result;
+			}
 			JSONObject object = new JSONObject();
 			object.put("adminUser", adminUser);
 			result.setJsonObject(object);
@@ -73,7 +81,7 @@ public class AdminHandlerImpl implements AdminHandler {
 		}
 	}
 
-	@Override
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public BaseResult addAdmin(WxWebParam param) {
 		// TODO Auto-generated method stub
 		BaseResult result = new BaseResult();
@@ -83,6 +91,7 @@ public class AdminHandlerImpl implements AdminHandler {
 			String password = param.getPassword();
 			String phone = param.getPhone();
 			String email = param.getEmail();
+			String roleId = param.getRoleId();
 			String state = param.getState();
 			if(StringUtils.isEmpty(username)) {
 				result.setMesg("用户名不能为空");
@@ -100,6 +109,10 @@ public class AdminHandlerImpl implements AdminHandler {
 				result.setMesg("邮箱不能为空");
 				return result;
 			}
+			if(StringUtils.isEmpty(roleId) || roleId.equals("0")) {
+				result.setMesg("未选择用户角色");
+				return result;
+			}
 			if(StringUtils.isEmpty(state)) {
 				result.setMesg("未选择是否开通");
 				return result;
@@ -111,8 +124,21 @@ public class AdminHandlerImpl implements AdminHandler {
 			adminUser.setEmail(email);
 			adminUser.setState(state);
 			adminUser.setCrtime(System.currentTimeMillis()/1000 + "");
+			List<TbAdminUser> adminUsers = adminService.findByUserName(username);
+			if(adminUsers.size() > 0) {
+				result.setMesg("登陆名已存在");
+				return result;
+			} 
 			TbAdminUser user = adminService.addAdmin(adminUser);
 			if(user != null) {
+				List<TbAdminUser> user2 = adminService.findByUserName(user.getUsername());
+				TbAdminUser adminUser2 = user2.get(0);
+				TbUserRole tbUserRole = new TbUserRole();
+				TbUserRoleId tbUserRoleId = new TbUserRoleId();
+				tbUserRoleId.setUid(adminUser2.getId());
+				tbUserRoleId.setRid(Integer.valueOf(roleId));
+				tbUserRole.setId(tbUserRoleId);
+				adminService.saveUserRole(tbUserRole);
 				JSONObject object = new JSONObject();
 				object.put("admin", user);
 				result.setJsonObject(object);

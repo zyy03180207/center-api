@@ -11,6 +11,8 @@ import com.db.support.DbException;
 import com.db.support.GenericServiceImpl;
 
 import microservice.online.entity.TbAdminUser;
+import microservice.online.entity.TbUserRole;
+import microservice.online.entity.TbUserRoleId;
 
 @SuppressWarnings("unchecked")
 @Service
@@ -52,6 +54,12 @@ public class AdminServiceImpl extends GenericServiceImpl implements AdminService
 			count = Integer.valueOf(list.get(0) + "");
 		}
 		return count;
+	}
+
+	@Override
+	public void saveUserRole(TbUserRole tbUserRole) throws DbException {
+		// TODO Auto-generated method stub
+		genericDao.save(tbUserRole);
 	}
 	
 }

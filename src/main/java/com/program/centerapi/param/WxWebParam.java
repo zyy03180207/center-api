@@ -10,6 +10,7 @@ public class WxWebParam {
 	
 	private String phone;	//手机号
 	private String email;	//邮箱地址
+	private String roleId;
 	private String state;	//是否开通
 	
 	public String getUsername() {
@@ -47,6 +48,12 @@ public class WxWebParam {
 	}
 	public void setEmail(String email) {
 		this.email = email;
+	}
+	public String getRoleId() {
+		return roleId;
+	}
+	public void setRoleId(String roleId) {
+		this.roleId = roleId;
 	}
 	public String getState() {
 		return state;

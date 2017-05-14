@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -25,9 +26,19 @@ public class RoleHandlerImpl implements RoleHandler {
 		BaseResult result = new BaseResult();
 		result.setSucc(false);
 		try {
-			List<TbRole> roles = roleService.findRole();
+			String pageIndex = param.getPageIndex();
+			String pageSize = param.getPageSize();
+			List<TbRole> roles = null;
+			int count = 0;
 			JSONObject object = new JSONObject();
 			JSONArray array = new JSONArray();
+			if(StringUtils.isEmpty(pageIndex) && StringUtils.isEmpty(pageSize)) {
+				roles = roleService.findRole();
+			} else {
+				roles = roleService.findRolePage(Integer.valueOf(pageIndex), Integer.valueOf(pageSize));
+				count = roleService.findRoleSize();
+				object.put("count", count);
+			}
 			array.addAll(roles);
 			object.put("list", array);
 			result.setJsonObject(object);
