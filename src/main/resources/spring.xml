@@ -14,7 +14,7 @@
     <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
           destroy-method="close">
         
-        <property name="jdbcUrl" value="jdbc:mysql://120.55.168.86:3306/wx_manage?useUnicode=true&amp;characterEncoding=utf8"></property>
+        <property name="jdbcUrl" value="jdbc:mysql://120.55.168.86:3306/wx_manage?useUnicode=true&amp;characterEncoding=utf8&amp;autoReconnect=true"></property>
         <property name="user" value="root" />
         <property name="password" value="zyy0318@:0207" />
         <property name="driverClass" value="com.mysql.jdbc.Driver" />
