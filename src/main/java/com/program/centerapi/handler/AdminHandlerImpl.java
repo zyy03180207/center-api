@@ -158,7 +158,7 @@ public class AdminHandlerImpl implements AdminHandler {
 				object2.put("email", map[3]);
 				object2.put("crtime", map[4]);
 				object2.put("state", map[5]);
-				object2.put("rname", map[8]);
+				object2.put("rname", map[8] == null ? "" : map[8]);
 				jsonArray.add(object2);
 			}
 			object.put("count", count);
