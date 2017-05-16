@@ -11,6 +11,7 @@ import com.db.support.GenericDao;
 import com.db.support.QueryDao;
 import com.program.centerapi.Global;
 import com.program.centerapi.handler.AdminHandler;
+import com.program.centerapi.handler.AuthorHandler;
 import com.program.centerapi.handler.FansHandler;
 import com.program.centerapi.handler.RoleHandler;
 import com.program.centerapi.param.BaseResult;
@@ -35,6 +36,9 @@ public class WxApiHandler extends ServiceApiAdapter {
 	
 	@Autowired
 	private RoleHandler roleHandler;
+	
+	@Autowired
+	private AuthorHandler authorHandler;
 	
 	@Override
 	public String execute(String json) {
@@ -72,7 +76,7 @@ public class WxApiHandler extends ServiceApiAdapter {
 				break;
 			case "tb_authorlist":
 				webParam = JSONObject.parseObject(param.getData(), WxWebParam.class);
-				result = fanslist(webParam);
+				result = authorlist(webParam);
 				break;
 			case "tb_add_admin":
 				webParam = JSONObject.parseObject(param.getData(), WxWebParam.class);
@@ -100,6 +104,24 @@ public class WxApiHandler extends ServiceApiAdapter {
 			String retData = JSONObject.toJSONString(result);
 			return retData;
 		}
+	}
+	/**
+	 * 查询权限菜单
+	 * @param webParam
+	 * @return
+	 */
+	private ServiceResult authorlist(WxWebParam webParam) {
+		// TODO Auto-generated method stub
+		ServiceResult result = new ServiceResult();
+		BaseResult mr = authorHandler.findSecqurity(webParam);
+		if(mr.isSucc()) {
+			result.setMesg(mr.getMesg());
+			result.setData(mr.getJsonObject().toJSONString());
+			result.setSucc(true);
+		} else {
+			result.setMesg(mr.getMesg());
+		}
+		return result;
 	}
 	/**
 	 * 查询角色列表
