@@ -10,5 +10,6 @@ public interface AuthorService {
 
 	public List<TbSecqurity> findSecqurity() throws DbException;
 	public List<Object> findSecqurityByUser(String username) throws DbException;
-	
+	public List<TbSecqurity> findByPage(int pageIndex, int pageSize) throws DbException;
+	public int findSecquritySize() throws DbException;
 }

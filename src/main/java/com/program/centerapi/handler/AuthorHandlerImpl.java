@@ -27,18 +27,10 @@ public class AuthorHandlerImpl implements AuthorHandler {
 		result.setSucc(false);
 		try {
 			String username = param.getUsername();
+			String pageIndex = param.getPageIndex();
+			String pageSize = param.getPageSize();
 			//查询所有的
-			if(StringUtils.isEmpty(username)) {
-				List<TbSecqurity> list = authorService.findSecqurity();
-				JSONObject object = new JSONObject();
-				JSONArray array = new JSONArray();
-				array.addAll(list);
-				object.put("list", array);
-				object.put("count", 0);
-				result.setJsonObject(object);
-				result.setMesg("查询成功");
-				result.setSucc(true);
-			} else {
+			if(!StringUtils.isEmpty(username)) {
 				List<Object> secqurities = authorService.findSecqurityByUser(username);
 				JSONObject object = new JSONObject();
 				JSONArray array = new JSONArray();
@@ -58,8 +50,28 @@ public class AuthorHandlerImpl implements AuthorHandler {
 				result.setJsonObject(object);
 				result.setMesg("查询成功");
 				result.setSucc(true);
+			} else if(!StringUtils.isEmpty(pageIndex) && !StringUtils.isEmpty(pageSize)) {
+				List<TbSecqurity> secqurities = authorService.findByPage(Integer.valueOf(pageIndex), Integer.valueOf(pageSize));
+				int count = authorService.findSecquritySize();
+				JSONObject object = new JSONObject();
+				JSONArray array = new JSONArray();
+				array.addAll(secqurities);
+				object.put("list", array);
+				object.put("count", count);
+				result.setJsonObject(object);
+				result.setMesg("查询成功,分页");
+				result.setSucc(true);
+			} else {
+				List<TbSecqurity> list = authorService.findSecqurity();
+				JSONObject object = new JSONObject();
+				JSONArray array = new JSONArray();
+				array.addAll(list);
+				object.put("list", array);
+				object.put("count", 0);
+				result.setJsonObject(object);
+				result.setMesg("查询成功");
+				result.setSucc(true);
 			}
-			
 			return result;
 		} catch (Exception e) {
 			result.setMesg(e.getCause().getMessage());
