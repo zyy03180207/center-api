@@ -88,7 +88,7 @@ public class WxApiHandler extends ServiceApiAdapter {
 				break;
 			case "tb_add_author":
 				webParam = JSONObject.parseObject(param.getData(), WxWebParam.class);
-				result = fanslist(webParam);
+				result = addAuthor(webParam);
 				break;
 			default:
 				result = ServiceResult.createFailResult("接口暂不支持");
@@ -104,6 +104,24 @@ public class WxApiHandler extends ServiceApiAdapter {
 			String retData = JSONObject.toJSONString(result);
 			return retData;
 		}
+	}
+	/**
+	 * 添加权限菜单
+	 * @param webParam
+	 * @return
+	 */
+	private ServiceResult addAuthor(WxWebParam webParam) {
+		// TODO Auto-generated method stub
+		ServiceResult result = new ServiceResult();
+		BaseResult mr = authorHandler.addSecqurity(webParam);
+		if(mr.isSucc()) {
+			result.setMesg(mr.getMesg());
+			result.setData(mr.getJsonObject().toJSONString());
+			result.setSucc(true);
+		} else {
+			result.setMesg(mr.getMesg());
+		}
+		return result;
 	}
 	/**
 	 * 查询权限菜单

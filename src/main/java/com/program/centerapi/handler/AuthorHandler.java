@@ -6,5 +6,5 @@ import com.program.centerapi.param.WxWebParam;
 public interface AuthorHandler {
 
 	public BaseResult findSecqurity(WxWebParam param);
-	
+	public BaseResult addSecqurity(WxWebParam param);
 }

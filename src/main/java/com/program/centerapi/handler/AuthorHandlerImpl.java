@@ -2,6 +2,8 @@ package com.program.centerapi.handler;
 
 import java.util.List;
 
+import javax.sound.midi.Sequence;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -71,6 +73,67 @@ public class AuthorHandlerImpl implements AuthorHandler {
 				result.setJsonObject(object);
 				result.setMesg("查询成功");
 				result.setSucc(true);
+			}
+			return result;
+		} catch (Exception e) {
+			result.setMesg(e.getCause().getMessage());
+			return result;
+		}
+	}
+
+	@Override
+	public BaseResult addSecqurity(WxWebParam param) {
+		// TODO Auto-generated method stub
+		BaseResult result = new BaseResult();
+		result.setSucc(false);
+		try {
+			String action = param.getAction();
+			String title = param.getTitle();
+			String des = param.getDes();
+			String icon = param.getIcon();
+			String ismenu = param.getIsmenu();
+			String pid = param.getPid();
+			if(StringUtils.isEmpty(action)) {
+				result.setMesg("连接地址不能为空");
+				return result;
+			}
+			if(StringUtils.isEmpty(title)) {
+				result.setMesg("权限名称不能为空");
+				return result;
+			}
+			if(StringUtils.isEmpty(des)) {
+				result.setMesg("权限描述不能为空");
+				return result;
+			}
+			if(StringUtils.isEmpty(ismenu)) {
+				result.setMesg("请选择是否是菜单");
+				return result;
+			}
+			if(StringUtils.isEmpty(pid)) {
+				result.setMesg("请选择上级菜单");
+				return result;
+			}
+			TbSecqurity secqurity = new TbSecqurity();
+			secqurity.setAction(action);
+			secqurity.setDes(des);
+			secqurity.setIcon(icon);
+			secqurity.setIsmenu(ismenu);
+			secqurity.setMenuName(title);
+			secqurity.setPid(Integer.valueOf(pid));
+			List<TbSecqurity> secqurities = authorService.findSecqurityByName(title);
+			if(secqurities.size() > 0) {
+				result.setMesg("权限菜单名称已存在");
+				return result;
+			}
+			TbSecqurity tbSecqurity = authorService.saveSecqurity(secqurity);
+			if(tbSecqurity != null) {
+				JSONObject object = new JSONObject();
+				object.put("author", tbSecqurity);
+				result.setJsonObject(object);
+				result.setSucc(true);
+				result.setMesg("权限添加成功");
+			} else {
+				result.setMesg("权限添加失败");
 			}
 			return result;
 		} catch (Exception e) {

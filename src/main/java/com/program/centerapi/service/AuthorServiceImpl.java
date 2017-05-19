@@ -50,6 +50,18 @@ public class AuthorServiceImpl extends GenericServiceImpl implements AuthorServi
 		}
 		return count;
 	}
+
+	@Override
+	public List<TbSecqurity> findSecqurityByName(String title) throws DbException {
+		// TODO Auto-generated method stub
+		return genericDao.findByHql(" from TbSecqurity where menuName = ?", new Object[]{title});
+	}
+
+	@Override
+	public TbSecqurity saveSecqurity(TbSecqurity secqurity) throws DbException {
+		// TODO Auto-generated method stub
+		return genericDao.save(secqurity);
+	}
 	
 	
 }

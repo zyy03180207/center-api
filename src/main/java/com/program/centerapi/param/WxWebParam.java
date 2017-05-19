@@ -13,6 +13,13 @@ public class WxWebParam {
 	private String roleId;
 	private String state;	//是否开通
 	
+	private String pid;
+	private String title;
+	private String des;
+	private String icon;
+	private String ismenu;
+	private String action;
+	
 	public String getUsername() {
 		return username;
 	}
@@ -60,5 +67,41 @@ public class WxWebParam {
 	}
 	public void setState(String state) {
 		this.state = state;
+	}
+	public String getPid() {
+		return pid;
+	}
+	public void setPid(String pid) {
+		this.pid = pid;
+	}
+	public String getTitle() {
+		return title;
+	}
+	public void setTitle(String title) {
+		this.title = title;
+	}
+	public String getDes() {
+		return des;
+	}
+	public void setDes(String des) {
+		this.des = des;
+	}
+	public String getIcon() {
+		return icon;
+	}
+	public void setIcon(String icon) {
+		this.icon = icon;
+	}
+	public String getIsmenu() {
+		return ismenu;
+	}
+	public void setIsmenu(String ismenu) {
+		this.ismenu = ismenu;
+	}
+	public String getAction() {
+		return action;
+	}
+	public void setAction(String action) {
+		this.action = action;
 	}
 }
