@@ -6,6 +6,8 @@ import javax.sound.midi.Sequence;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import com.alibaba.fastjson.JSONArray;
@@ -14,6 +16,8 @@ import com.program.centerapi.param.BaseResult;
 import com.program.centerapi.param.WxWebParam;
 import com.program.centerapi.service.AuthorService;
 
+import microservice.online.entity.TbRoleSecqurity;
+import microservice.online.entity.TbRoleSecqurityId;
 import microservice.online.entity.TbSecqurity;
 
 @Service
@@ -81,7 +85,7 @@ public class AuthorHandlerImpl implements AuthorHandler {
 		}
 	}
 
-	@Override
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public BaseResult addSecqurity(WxWebParam param) {
 		// TODO Auto-generated method stub
 		BaseResult result = new BaseResult();
@@ -127,6 +131,13 @@ public class AuthorHandlerImpl implements AuthorHandler {
 			}
 			TbSecqurity tbSecqurity = authorService.saveSecqurity(secqurity);
 			if(tbSecqurity != null) {
+				TbSecqurity secqurity2 = authorService.findByTitle(tbSecqurity.getMenuName());
+				TbRoleSecqurity roleSecqurity = new TbRoleSecqurity();
+				TbRoleSecqurityId roleSecqurityId = new TbRoleSecqurityId();
+				roleSecqurityId.setSid(secqurity2.getId());
+				roleSecqurityId.setRid(1);
+				roleSecqurity.setId(roleSecqurityId);
+				authorService.saveSecRole(roleSecqurity);
 				JSONObject object = new JSONObject();
 				object.put("author", tbSecqurity);
 				result.setJsonObject(object);

@@ -9,6 +9,7 @@ import com.db.support.DbException;
 import com.db.support.GenericServiceImpl;
 
 import microservice.online.entity.TbAdminUser;
+import microservice.online.entity.TbRoleSecqurity;
 import microservice.online.entity.TbSecqurity;
 
 @SuppressWarnings("unchecked")
@@ -61,6 +62,23 @@ public class AuthorServiceImpl extends GenericServiceImpl implements AuthorServi
 	public TbSecqurity saveSecqurity(TbSecqurity secqurity) throws DbException {
 		// TODO Auto-generated method stub
 		return genericDao.save(secqurity);
+	}
+
+	@Override
+	public TbSecqurity findByTitle(String title) throws DbException {
+		// TODO Auto-generated method stub
+		String hql = " from TbSecqurity where menuName = ?";
+		List<TbSecqurity> list = genericDao.findByHql(hql, new Object[]{ title });
+		if(list.size() > 0) {
+			return list.get(0);
+		}
+		return null;
+	}
+
+	@Override
+	public void saveSecRole(TbRoleSecqurity roleSecqurity) throws DbException {
+		// TODO Auto-generated method stub
+		genericDao.save(roleSecqurity);
 	}
 	
 	
