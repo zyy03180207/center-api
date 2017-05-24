@@ -11,4 +11,6 @@ public interface RoleService {
 	public List<TbRole> findRole() throws DbException;
 	public List<TbRole> findRolePage(int pageIndex, int pageSize) throws DbException;
 	public int findRoleSize() throws DbException;
+	public TbRole findRoleByName(String name) throws DbException;
+	public TbRole saveRole(TbRole tbRole) throws DbException;
 }

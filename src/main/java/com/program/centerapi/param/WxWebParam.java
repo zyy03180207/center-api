@@ -20,6 +20,9 @@ public class WxWebParam {
 	private String ismenu;
 	private String action;
 	
+	private String name;
+	private String introduce;
+	
 	public String getUsername() {
 		return username;
 	}
@@ -103,5 +106,17 @@ public class WxWebParam {
 	}
 	public void setAction(String action) {
 		this.action = action;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getIntroduce() {
+		return introduce;
+	}
+	public void setIntroduce(String introduce) {
+		this.introduce = introduce;
 	}
 }

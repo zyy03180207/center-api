@@ -6,4 +6,5 @@ import com.program.centerapi.param.WxWebParam;
 public interface RoleHandler {
 
 	public BaseResult findRoleList(WxWebParam param);
+	public BaseResult addRole(WxWebParam param);
 }

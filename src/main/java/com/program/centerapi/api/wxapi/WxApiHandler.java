@@ -84,7 +84,7 @@ public class WxApiHandler extends ServiceApiAdapter {
 				break;
 			case "tb_add_role":
 				webParam = JSONObject.parseObject(param.getData(), WxWebParam.class);
-				result = fanslist(webParam);
+				result = addRole(webParam);
 				break;
 			case "tb_add_author":
 				webParam = JSONObject.parseObject(param.getData(), WxWebParam.class);
@@ -104,6 +104,24 @@ public class WxApiHandler extends ServiceApiAdapter {
 			String retData = JSONObject.toJSONString(result);
 			return retData;
 		}
+	}
+	/**
+	 * 添加角色
+	 * @param webParam
+	 * @return
+	 */
+	private ServiceResult addRole(WxWebParam webParam) {
+		// TODO Auto-generated method stub
+		ServiceResult result = new ServiceResult();
+		BaseResult mr = roleHandler.addRole(webParam);
+		if(mr.isSucc()) {
+			result.setMesg(mr.getMesg());
+			result.setData(mr.getJsonObject().toJSONString());
+			result.setSucc(true);
+		} else {
+			result.setMesg(mr.getMesg());
+		}
+		return result;
 	}
 	/**
 	 * 添加权限菜单

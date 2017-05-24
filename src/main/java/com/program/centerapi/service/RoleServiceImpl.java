@@ -43,4 +43,21 @@ public class RoleServiceImpl extends GenericServiceImpl implements RoleService {
 		return count;
 	}
 
+	@Override
+	public TbRole findRoleByName(String name) throws DbException {
+		// TODO Auto-generated method stub
+		String hql = " from TbRole where name = ?";
+		List<TbRole> list = genericDao.findByHql(hql, new Object[]{name});
+		if(list.size() > 0) {
+			return list.get(0);
+		}
+		return null;
+	}
+
+	@Override
+	public TbRole saveRole(TbRole tbRole) throws DbException {
+		// TODO Auto-generated method stub
+		return genericDao.save(tbRole, true);
+	}
+
 }
