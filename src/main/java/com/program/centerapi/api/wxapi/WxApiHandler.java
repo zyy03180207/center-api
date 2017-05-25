@@ -90,6 +90,14 @@ public class WxApiHandler extends ServiceApiAdapter {
 				webParam = JSONObject.parseObject(param.getData(), WxWebParam.class);
 				result = addAuthor(webParam);
 				break;
+			case "tb_del_admin":
+				webParam = JSONObject.parseObject(param.getData(), WxWebParam.class);
+				result = delAdmin(webParam);
+				break;
+			case "tb_os_admin":
+				webParam = JSONObject.parseObject(param.getData(), WxWebParam.class);
+				result = osAdmin(webParam);
+				break;
 			default:
 				result = ServiceResult.createFailResult("接口暂不支持");
 				break;
@@ -104,6 +112,40 @@ public class WxApiHandler extends ServiceApiAdapter {
 			String retData = JSONObject.toJSONString(result);
 			return retData;
 		}
+	}
+	/**
+	 * 停用开启管理员用户
+	 * @param webParam
+	 * @return
+	 */
+	private ServiceResult osAdmin(WxWebParam webParam) {
+		// TODO Auto-generated method stub
+		ServiceResult result = new ServiceResult();
+		BaseResult mr = adminHandler.osAdmin(webParam);
+		if(mr.isSucc()) {
+			result.setMesg(mr.getMesg());
+			result.setSucc(true);
+		} else {
+			result.setMesg(mr.getMesg());
+		}
+		return result;
+	}
+	/**
+	 * 删除管理员
+	 * @param webParam
+	 * @return
+	 */
+	private ServiceResult delAdmin(WxWebParam webParam) {
+		// TODO Auto-generated method stub
+		ServiceResult result = new ServiceResult();
+		BaseResult mr = adminHandler.delAdmin(webParam);
+		if(mr.isSucc()) {
+			result.setMesg(mr.getMesg());
+			result.setSucc(true);
+		} else {
+			result.setMesg(mr.getMesg());
+		}
+		return result;
 	}
 	/**
 	 * 添加角色

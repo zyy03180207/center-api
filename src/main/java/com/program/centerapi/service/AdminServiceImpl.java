@@ -61,5 +61,17 @@ public class AdminServiceImpl extends GenericServiceImpl implements AdminService
 		// TODO Auto-generated method stub
 		genericDao.save(tbUserRole);
 	}
+
+	@Override
+	public void delAdmin(int id) throws DbException {
+		// TODO Auto-generated method stub
+		genericDao.delete(TbAdminUser.class, id);
+	}
+
+	@Override
+	public void osAdmin(TbAdminUser adminUser) throws DbException {
+		// TODO Auto-generated method stub
+		genericDao.update(adminUser);
+	}
 	
 }

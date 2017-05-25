@@ -23,6 +23,10 @@ public class WxWebParam {
 	private String name;
 	private String introduce;
 	
+	private String[] delId;
+	
+	private String[] ids;
+	
 	public String getUsername() {
 		return username;
 	}
@@ -118,5 +122,17 @@ public class WxWebParam {
 	}
 	public void setIntroduce(String introduce) {
 		this.introduce = introduce;
+	}
+	public String[] getDelId() {
+		return delId;
+	}
+	public void setDelId(String[] delId) {
+		this.delId = delId;
+	}
+	public String[] getIds() {
+		return ids;
+	}
+	public void setIds(String[] ids) {
+		this.ids = ids;
 	}
 }

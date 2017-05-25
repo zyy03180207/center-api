@@ -8,4 +8,6 @@ public interface AdminHandler {
 	public BaseResult login(WxWebParam param);
 	public BaseResult addAdmin(WxWebParam param);
 	public BaseResult adminList(WxWebParam param);
+	public BaseResult delAdmin(WxWebParam param);
+	public BaseResult osAdmin(WxWebParam param);
 }

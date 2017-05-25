@@ -17,4 +17,6 @@ public interface AdminService {
 	public List<Object> findUserAdmin(int pageIndex, int pageSize) throws DbException;
 	public int findAdminSize() throws DbException;
 	public void saveUserRole(TbUserRole tbUserRole) throws DbException;
+	public void delAdmin(int id) throws DbException;
+	public void osAdmin(TbAdminUser adminUser) throws DbException;
 }

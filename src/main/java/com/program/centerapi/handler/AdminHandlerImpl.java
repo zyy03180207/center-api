@@ -200,4 +200,48 @@ public class AdminHandlerImpl implements AdminHandler {
 		}
 	}
 
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public BaseResult delAdmin(WxWebParam param) {
+		// TODO Auto-generated method stub
+		BaseResult result = new BaseResult();
+		result.setSucc(false);
+		try {
+			String[] delId = param.getDelId();
+			for(int i = 0; i < delId.length; i++) {
+				int id = Integer.valueOf(delId[i]);
+				adminService.delAdmin(id);
+			}
+			result.setMesg("删除成功");
+			result.setSucc(true);
+			return result;
+		} catch (Exception e) {
+			result.setSucc(false);
+			result.setMesg(e.getCause().getMessage());
+			return result;
+		}
+	}
+
+	@Override
+	public BaseResult osAdmin(WxWebParam param) {
+		// TODO Auto-generated method stub
+		BaseResult result = new BaseResult();
+		result.setSucc(false);
+		try {
+			String[] ids = param.getIds();
+			String state = param.getState();
+			for(int i = 0; i < ids.length; i++) {
+				int id = Integer.valueOf(ids[i]);
+				TbAdminUser adminUser = adminService.getAdminUser(id);
+				adminUser.setState(state);
+				adminService.osAdmin(adminUser);
+			}
+			result.setMesg("修改成功");
+			result.setSucc(true);
+			return result;
+		} catch (Exception e) {
+			result.setMesg(e.getCause().getMessage());
+			return result;
+		}
+	}
+
 }
